@@ -1,3 +1,6 @@
+//AUTOR: JOEL EDUARDO SANCHEZ HERRERA
+//ESTILO DE CODIGO: BDS
+
 import java.util.Scanner;
 import java.util.Stack;
 

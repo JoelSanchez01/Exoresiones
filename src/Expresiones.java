@@ -11,33 +11,34 @@ public class Expresiones {
     static Stack<Character> operadores = new Stack<>();
 
     static double Evaluar(String expresion){
+        //REVISIMOS UN VALOR Y LO SEPARAMOS EN UN ARREGLO DE CARACTERES
         char[] caracteres = expresion.toCharArray();
 
         for (int i = 0; i < caracteres.length ; i++) {
-            if(caracteres[i] == ' ') continue;
-            else if (caracteres[i] >= '0' && caracteres[i] <= '9') {
+            if(caracteres[i] == ' ') continue; //si es un espacio lo ignoramos
+            else if (caracteres[i] >= '0' && caracteres[i] <= '9') { //si es un numero entra a la funcion donde agarramos los digitos que contenga
                 StringBuilder constructor = new StringBuilder();
-                while (i < caracteres.length && (caracteres[i] >= '0' && caracteres[i] <= '9')) {
-                    constructor.append(caracteres[i]);
+                while (i < caracteres.length && ((caracteres[i] >= '0' && caracteres[i] <= '9') || caracteres[i] == '.')) { //VERIFICA QUE SEA UN NUMERO DE MAS CIFRAS O CONTENGA UN PUNTO
+                    constructor.append(caracteres[i]); //LO AGREGA TODO EN UN STRING
                     i++;
                 }
-                String s = constructor.toString();
-                double numero = Double.parseDouble(s);
-                valores.push(numero);
+                String s = constructor.toString(); 
+                double numero = Double.parseDouble(s); //LO CONVIERTE EN UN NUMERO Y LO MANDA A LA PILA DE NUMEROS
+                valores.push(numero); 
                 i--;
             }
             else if(caracteres[i] == '(') {
-                operadores.push(caracteres[i]);
+                operadores.push(caracteres[i]); //SI ES UN INICIO DE PARENTESIS LO MANDA A LA PILA DE OPERADORES
             }
             else if(caracteres[i] == ')'){
                 while(operadores.peek() != '('){
-                    hacerOperacion();
+                    hacerOperacion(); //REVISA QUE TENGA UN PARENTESIS DE CIERRE Y HACE LA OPERACION
                 }
                 operadores.pop();
 
             } else if(esOperador(caracteres[i])){
                 while(!operadores.isEmpty() && precedencia(operadores.peek()) >= precedencia(caracteres[i])){
-                        hacerOperacion();
+                        hacerOperacion(); //hace la operacion dependiendo de la precedencia
                 }
                 operadores.push(caracteres[i]);
             }
@@ -55,7 +56,7 @@ public class Expresiones {
             case '+', '-' -> 1;
             case '*', '/', '%' -> 2;
             case '^' -> 3;
-            default -> -1;
+            default -> -1; //asigna un valor de jerarquia a la precedencia
         };
     }
 
@@ -72,13 +73,14 @@ public class Expresiones {
             case '%' -> valores.push(a%b);
             case '^' -> valores.push(Math.pow(a, b));
         }
+        //DEPENDIENDO DEL CASO HACE UN SWITCH PARA HACER LA OPERACION
     }
 
     private static boolean esOperador(char op){
         return op == '*' || op == '/'
                 || op == '^' || op == '%'
                 || op == '+' || op == '-';
-
+    //REVISA QUE TODO SEA UN OPERADOR
     }
 
 
@@ -86,7 +88,7 @@ public class Expresiones {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println(Evaluar(sc.next()));
+        System.out.println(Evaluar(sc.next())); //IMPRIME LA FUNCION CUANDO LA MANDA A LLAMAR Y MANDA UN VALOR POR TECLADO
     }
 
 
